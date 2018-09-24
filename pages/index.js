@@ -1,30 +1,31 @@
 // pages/index.js
-require('isomorphic-fetch');
 import Link from 'next/link'
 import React from 'react'
 
 export default class extends React.Component {
-  static async getInitialProps({ req }) {
-    const res = await fetch('https://api.github.com/repos/zeit/next.js')
-    const json = await res.json()
-    return { stars: json.stargazers_count }
-  }
-
+    static async getInitialProps({ req }) {
+        console.log({req})
+    return { lyrics: req.pageData }
+    }
   render() {
-    const { stars } = this.props;
+    const {lyrics} = this.props;
+
+    const htmlLyrics = lyrics
+      .map(obj => JSON.parse(obj).lyrics)
+      .map(l => l.replace(/\n/g, "<br />"));
+    function createMarkup() { return {__html: htmlLyrics}; };
     return (
         <div>
-            <p>
-            👋 la bouffe front 😻
-            </p>
-            <p>
-            Next stars: {stars}
-            </p>
-            <Link prefetch href="/cow">
-              Meuh
+            <Link prefetch href="/beatles">
+              Beatles
             </Link>{' '}
+            <Link prefetch href="/metallica">
+              Metallica
+            </Link>{' '}
+            {htmlLyrics.length > 0 ? <div dangerouslySetInnerHTML={createMarkup()} /> :
+            <p>Désolé, apparemment alex ne connait pas ce groupe</p>}
         </div>
-    
+
     )
   }
 }
