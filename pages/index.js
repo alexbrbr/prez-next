@@ -3,6 +3,11 @@ import Link from 'next/link'
 
 export default () => (
   <div>
-    👋 la bouffe front 😻
+    <p>
+      👋 la bouffe front 😻
+    </p>
+    <Link prefetch href="/cow">
+      Meuh
+    </Link>{' '}
   </div>
 )
